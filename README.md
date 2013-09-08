@@ -8,7 +8,8 @@ npm install bisss -g
 ### what is bisss?
 
 + a simple utility to initialize new NodeJS projects. 
-+ the sound of an old turkish woman getting on a bus.
++ the sound an old turkish woman would make as she gets on the bus.
++ short for [this](http://en.wikipedia.org/wiki/Basmala).
 
 ### what does bisss do?
 
