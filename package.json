@@ -1,0 +1,22 @@
+{
+    "name": "bisss",
+    "version": "0.0.0",
+    "description": "a simple initial setup for node projects",
+    "main": "app.js",
+    "bin": {
+        "bisss": "./bin/app"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": {
+        "name": "Ahmet Kizilay",
+        "url": "https://github.com/artsince"
+    },
+    "license": "MIT",
+    "dependencies": {},
+    "devDependencies": {},
+    "engines": {
+        "node": "*"
+    }
+}
