@@ -36,6 +36,7 @@ module.exports = (function () {
             }
             console.log('initializing git...'.col('blue'));
             sys.puts(stdout);
+            sys.puts(stderr);
         });
     };
 
@@ -55,24 +56,22 @@ module.exports = (function () {
         pkg += '    }\n';
         pkg += "}";
 
+        console.log('creating... '.col('blue') + path.join(rootPath, 'package.json'));
         fs.writeFile(path.join(rootPath, 'package.json'), pkg, function (err) {
             if(err) {
                 throw err;
             }
-
-            console.log('created: '.col('blue') + path.join(rootPath, 'package.json'));
         });
     };
 
     var _initReadme = function (rootPath, projectName) {
         var str = '# ' + projectName;
 
+        console.log('creating... '.col('blue') + path.join(rootPath, 'README.md'));
         fs.writeFile(path.join(rootPath, 'README.md'), str, function (err) {
             if(err) {
                 throw err;
             }
-
-            console.log('created: '.col('blue') + path.join(rootPath, 'README.md'));
         });
     };
 
@@ -90,30 +89,32 @@ module.exports = (function () {
         rootPath = path.join(__dirname, rootDir, projectName);
 
         if(fs.existsSync(rootPath)) {
-            console.log('exists: '.col('red') + rootPath);
+            console.log('exists... '.col('red') + rootPath);
         }
         else {
+            console.log('creating... '.col('blue') + rootPath);
             fs.mkdirSync(rootPath);
-            console.log('created: '.col('blue') + rootPath);
         }
 
         // creating default files... files to be created could be read from a config file
         _initReadme(rootPath, projectName);
         _initPackageJSON(rootPath, projectName);
 
-        fs.openSync(path.join(rootPath, 'app.js'), 'w');
-        console.log('created: '.col('blue') + path.join(rootPath, 'app.js'));
 
+        console.log('creating... '.col('blue') + path.join(rootPath, 'app.js'));
+        fs.openSync(path.join(rootPath, 'app.js'), 'w');
+
+
+        console.log('creating... '.col('blue') + path.join(rootPath, '.gitignore'));
         fs.writeFile(path.join(rootPath, '.gitignore'), 'node_modules/', function (err) {
             if(err) {
                 throw err;
             }
 
-            console.log('created: '.col('blue') + path.join(rootPath, '.gitignore'));
         });
 
+        console.log('creating... '.col('blue') + path.join(rootPath, 'LICENSE'));
         fs.openSync(path.join(rootPath, 'LICENSE'), 'w');
-        console.log('created: '.col('blue') + path.join(rootPath, 'LICENSE'));
 
         _initGit(rootPath);
     };
