@@ -1,7 +1,5 @@
 /// colorizing text for command line
 String.prototype.col = function(col) {
-    'use strict';
-    
     switch(col) {
         case 'black':
             return '\033[30m' + this + '\033[0m';
