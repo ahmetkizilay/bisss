@@ -4,7 +4,7 @@
     "description": "a simple utility to initialize new NodeJS projects",
     "main": "app.js",
     "bin": {
-        "bisss": "./bin/app"
+        "bisss": "./bin/bisss"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
