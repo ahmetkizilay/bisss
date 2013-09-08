@@ -25,14 +25,15 @@ module.exports = function (argv) {
     'use strict';
     var path = require('path'),
         fs = require('fs'),
-        rootPath;
+        rootPath, projectName;
 
     if(argv.length < 3) {
         console.log('error: expected another argument for root path');
         return;
     }
     
-    rootPath = path.join(__dirname, argv[2]);
+    projectName = argv[2];
+    rootPath = path.join(__dirname, projectName);
 
     if(fs.existsSync(rootPath)) {
         console.log('exists: '.col('red') + rootPath);
@@ -43,8 +44,13 @@ module.exports = function (argv) {
     }
 
     // creating default files... files to be created could be read from a config file
-    fs.openSync(path.join(rootPath, 'README.md'), 'w');
-    console.log('created: '.col('blue') + path.join(rootPath, 'README.md'));
+    fs.writeFile(path.join(rootPath, 'README.md'), '# ' + projectName, function (err) {
+        if(err) {
+            throw err;
+        }
+
+        console.log('created: '.col('blue') + path.join(rootPath, 'README.md'));
+    });
 
     fs.openSync(path.join(rootPath, 'package.json'), 'w');
     console.log('created: '.col('blue') + path.join(rootPath, 'package.json'));
