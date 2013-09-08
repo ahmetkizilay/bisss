@@ -1,4 +1,7 @@
+/// colorizing text for command line
 String.prototype.col = function(col) {
+    'use strict';
+    
     switch(col) {
         case 'black':
             return '\033[30m' + this + '\033[0m';
@@ -75,6 +78,36 @@ module.exports = (function () {
         });
     };
 
+    var _initAppJS = function (rootPath) {
+        console.log('creating... '.col('blue') + path.join(rootPath, 'app.js'));
+        fs.open(path.join(rootPath, 'app.js'), 'w', function (err) {
+            if(err) {
+                throw err;
+            }
+        });
+    };
+
+    var _initGitIgnore = function (rootPath) {
+        var str = 'node_modules/';
+
+        console.log('creating... '.col('blue') + path.join(rootPath, '.gitignore'));
+        fs.writeFile(path.join(rootPath, '.gitignore'), str, function (err) {
+            if(err) {
+                throw err;
+            }
+
+        });
+    };
+
+    var _initLicense = function (rootPath) {
+        console.log('creating... '.col('blue') + path.join(rootPath, 'LICENSE'));
+        fs.open(path.join(rootPath, 'LICENSE'), 'w', function (err) {
+            if(err) {
+                throw err;
+            }
+        });
+    };
+
     var _mainFunc = function (argv) {
     
         var rootPath, projectName, rootDir;
@@ -99,22 +132,9 @@ module.exports = (function () {
         // creating default files... files to be created could be read from a config file
         _initReadme(rootPath, projectName);
         _initPackageJSON(rootPath, projectName);
-
-
-        console.log('creating... '.col('blue') + path.join(rootPath, 'app.js'));
-        fs.openSync(path.join(rootPath, 'app.js'), 'w');
-
-
-        console.log('creating... '.col('blue') + path.join(rootPath, '.gitignore'));
-        fs.writeFile(path.join(rootPath, '.gitignore'), 'node_modules/', function (err) {
-            if(err) {
-                throw err;
-            }
-
-        });
-
-        console.log('creating... '.col('blue') + path.join(rootPath, 'LICENSE'));
-        fs.openSync(path.join(rootPath, 'LICENSE'), 'w');
+        _initAppJS(rootPath);
+        _initGitIgnore(rootPath);
+        _initLicense(rootPath);
 
         _initGit(rootPath);
     };
