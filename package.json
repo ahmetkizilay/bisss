@@ -1,7 +1,7 @@
 {
     "name": "bisss",
     "version": "0.0.1",
-    "description": "a simple initial setup for node projects",
+    "description": "a simple utility to initialize new NodeJS projects",
     "main": "app.js",
     "bin": {
         "bisss": "./bin/app"
