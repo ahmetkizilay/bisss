@@ -1,6 +1,6 @@
 {
     "name": "bisss",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "description": "a simple initial setup for node projects",
     "main": "app.js",
     "bin": {
@@ -12,6 +12,10 @@
     "author": {
         "name": "Ahmet Kizilay",
         "url": "https://github.com/artsince"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/artsince/bisss.git"
     },
     "license": "MIT",
     "dependencies": {},
