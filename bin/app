@@ -2,5 +2,5 @@
 
 (function() {
     'use strict';
-    require('../app.js');
+    require('../app.js')(process.argv);
 }).call();
