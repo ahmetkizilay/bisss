@@ -25,7 +25,10 @@ String.prototype.col = function(col) {
 module.exports = (function () {
     'use strict';
     var path = require('path'),
-        fs = require('fs');
+        fs = require('fs'),
+        home_folder = process.env.USERPROFILE || process.env.HOME || process.env.HOMEPATH,
+        config_path = path.join(home_folder, '.bisss.conf'),
+        configJSON;
 
     var _initGit = function (rootPath) {
         var sys = require('sys'),
@@ -106,6 +109,20 @@ module.exports = (function () {
         });
     };
 
+    var _readConfigJSON = function (configPath) {
+        if(fs.existsSync(configPath)) {
+            var configText = fs.readFileSync(configPath, { encoding: 'utf8'});
+            return JSON.parse(configText);
+        }
+        else {
+            // create json
+            return {
+                "author": "",
+                "license": "MIT"
+            };
+        }
+    };
+
     var _mainFunc = function (argv) {
     
         var rootPath, projectName, rootDir;
@@ -118,6 +135,8 @@ module.exports = (function () {
         projectName = argv[2];
         rootDir = argv[3] || '.';
         rootPath = path.join(__dirname, rootDir, projectName);
+
+        configJSON = _readConfigJSON(config_path);
 
         if(fs.existsSync(rootPath)) {
             console.log('exists... '.col('red') + rootPath);
