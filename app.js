@@ -130,6 +130,16 @@ module.exports = (function () {
         }
     };
 
+    var _initProjectFolder = function (rootPath) {
+        if(fs.existsSync(rootPath)) {
+            console.log('exists... '.col('red') + rootPath);
+        }
+        else {
+            console.log('creating... '.col('blue') + rootPath);
+            fs.mkdirSync(rootPath);
+        }
+    };
+
     var _mainFunc = function (argv) {
     
         var rootPath, projectName, rootDir;
@@ -145,15 +155,8 @@ module.exports = (function () {
 
         configJSON = _readConfigJSON(config_path);
 
-        if(fs.existsSync(rootPath)) {
-            console.log('exists... '.col('red') + rootPath);
-        }
-        else {
-            console.log('creating... '.col('blue') + rootPath);
-            fs.mkdirSync(rootPath);
-        }
-
         // creating default files... files to be created could be read from a config file
+        _initProjectFolder(rootPath);
         _initReadme(rootPath, projectName);
         _initPackageJSON(rootPath, projectName);
         _initAppJS(rootPath);
