@@ -115,11 +115,18 @@ module.exports = (function () {
             return JSON.parse(configText);
         }
         else {
-            // create json
-            return {
+            var defaultConf = {
                 "author": "",
                 "license": "MIT"
             };
+
+            fs.writeFile(configPath, JSON.stringify(defaultConf, null, "\t"), function (err) {
+                if(err) {
+                    throw err;
+                }
+            });
+
+            return defaultConf;
         }
     };
 
