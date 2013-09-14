@@ -140,15 +140,13 @@ module.exports = (function () {
         }
     };
 
-    var _mainFunc = function (argv) {
-    
-        var rootPath, projectName, rootDir;
+    var _updateConfig = function (argv) {
+        console.log('I should update config file here');
+    };
 
-        if(argv.length < 3) {
-            console.log('error: expected another argument for root path');
-            return;
-        }
-        
+    var _createProject = function(argv) {
+       var rootPath, projectName, rootDir;
+
         projectName = argv[2];
         rootDir = argv[3] || '.';
         rootPath = path.join(__dirname, rootDir, projectName);
@@ -164,6 +162,22 @@ module.exports = (function () {
         _initLicense(rootPath);
 
         _initGit(rootPath);
+    };
+
+    var _mainFunc = function (argv) {
+    
+
+        if(argv.length < 3) {
+            console.log('error: expected another argument for root path');
+            return;
+        }
+
+        if(/^--config\./i.test(argv[2])) {
+            _updateConfig(argv);
+        }
+        else {
+            _createProject(argv);
+        }
     };
 
     return _mainFunc;
