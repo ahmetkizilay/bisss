@@ -1,4 +1,7 @@
-/// colorizing text for command line
+/*
+    Colorizing command line output. Cannot use strict mode here as octal notation is not allowed
+    in strict mode.
+*/
 String.prototype.col = function(col) {
     switch(col) {
         case 'black':
@@ -22,6 +25,12 @@ String.prototype.col = function(col) {
     }
 };
 
+/*
+    ./bin/bisss calls this function to start the program passing the command line arguments.
+    returns _mainFunc
+
+    usage: require('../app.js')(process.argv);
+*/
 module.exports = (function () {
     'use strict';
     var path = require('path'),
@@ -30,6 +39,11 @@ module.exports = (function () {
         config_path = path.join(home_folder, '.bisss.conf'),
         configJSON;
 
+    /*
+        Initializes git repository. Assumes git exists.
+
+        TODO: make git initialization optional based on the config setting.
+    */
     var _initGit = function (rootPath) {
         var sys = require('sys'),
             exec = require('child_process').exec;
@@ -44,6 +58,10 @@ module.exports = (function () {
         });
     };
 
+    /*
+        Initializes the sample package.json file. certain parameters are read from the configJSON.
+        More parameters could be added later.
+    */
     var _initPackageJSON = function (rootPath, projectName) {
         var pkg = '';
         pkg += '{\n';
@@ -68,6 +86,9 @@ module.exports = (function () {
         });
     };
 
+    /*
+        Initializes README.md file. The project name is added as a title by default.
+    */
     var _initReadme = function (rootPath, projectName) {
         var str = '# ' + projectName;
 
@@ -79,6 +100,10 @@ module.exports = (function () {
         });
     };
 
+    /*
+        Initializes default application entry point file.
+        It by default names app.js and it is empty
+    */
     var _initAppJS = function (rootPath) {
         console.log('creating... '.col('blue') + path.join(rootPath, 'app.js'));
         fs.open(path.join(rootPath, 'app.js'), 'w', function (err) {
@@ -88,6 +113,9 @@ module.exports = (function () {
         });
     };
 
+    /*
+        Initializes default .gitignore file. 
+    */
     var _initGitIgnore = function (rootPath) {
         var str = 'node_modules/';
 
@@ -100,6 +128,9 @@ module.exports = (function () {
         });
     };
 
+    /*
+        Initiliazing empty LICENSE file
+    */
     var _initLicense = function (rootPath) {
         console.log('creating... '.col('blue') + path.join(rootPath, 'LICENSE'));
         fs.open(path.join(rootPath, 'LICENSE'), 'w', function (err) {
@@ -109,6 +140,11 @@ module.exports = (function () {
         });
     };
 
+    /* 
+        reads the config file in the <i>configPath</i>. this is a synchronous operation as other
+        tasks are likely to be dependent on it. If the config file does not exist, i.e. the first
+        time the program is run, the config file is created with default settings.
+    */
     var _readConfigJSON = function (configPath) {
         if(fs.existsSync(configPath)) {
             var configText = fs.readFileSync(configPath, { encoding: 'utf8'});
@@ -130,6 +166,10 @@ module.exports = (function () {
         }
     };
 
+    /* 
+        creates the project folder. this is the first task in the project creation
+        and the other tasks depend on it. therefore this is a syncronous operation.
+    */
     var _initProjectFolder = function (rootPath) {
         if(fs.existsSync(rootPath)) {
             console.log('exists... '.col('red') + rootPath);
@@ -140,10 +180,28 @@ module.exports = (function () {
         }
     };
 
+    /*
+        Unimplemented yet...
+        should be able to read arguments in dot notation such as: --config.author.name <value>
+        and set the value to author.name in the config file.
+        should be able to create the path if it does not exist
+    */
     var _updateConfig = function (argv) {
         console.log('I should update config file here');
     };
 
+    /* 
+        creates the skeleton of a new project. Right now, the files to be created are pre-determined.
+        each task is handled in a separate method.
+
+        argv[2] is the project name to be created. 
+        argv[3] is the path to the new project. dot command is accepted.
+        example usage: ./bin/bisss bisss-test .. (linux)
+                       node bin/bisss bisss-test .. (windows) 
+
+        TODO: _readConfigJSON method should be handled outside of this method because _updateConfig also
+        depends on it.
+    */
     var _createProject = function(argv) {
        var rootPath, projectName, rootDir;
 
@@ -164,9 +222,10 @@ module.exports = (function () {
         _initGit(rootPath);
     };
 
+    /*
+        Entry method. _createProject or _updateConfig is called based on the argument passed
+    */
     var _mainFunc = function (argv) {
-    
-
         if(argv.length < 3) {
             console.log('error: expected another argument for root path');
             return;
