@@ -181,13 +181,40 @@ module.exports = (function () {
     };
 
     /*
-        Unimplemented yet...
-        should be able to read arguments in dot notation such as: --config.author.name <value>
-        and set the value to author.name in the config file.
-        should be able to create the path if it does not exist
+        reads arguments in dot notation such as: --config.author.name <value>
+        and sets the value to author.name in the config file.
+        creates the path if it does not exist
     */
     var _updateConfig = function (argv) {
-        console.log('I should update config file here');
+        var cfgVal = argv[3],
+            cfgKey = argv[2].replace(/^--config\./i, ""),
+            cfgPath = cfgKey.split('.'),
+            cfgRef = configJSON,
+            len = cfgPath.length - 1,
+            i;
+
+        for(i = 0; i < len; ++i) {
+            if(cfgPath[i] in cfgRef) {
+                // this type checking is necessary for overwriting keys that are previously
+                // of primitive type.
+                if(typeof cfgRef[cfgPath[i]] !== 'object') {
+                    cfgRef[cfgPath[i]] = {};
+                }
+                cfgRef = cfgRef[cfgPath[i]];
+            }
+            else {
+                cfgRef[cfgPath[i]] = {};
+                cfgRef = cfgRef[cfgPath[i]];
+            }
+        }
+
+        cfgRef[cfgPath[len]] = cfgVal;
+
+        fs.writeFile(config_path, JSON.stringify(configJSON, null, "\t"), function (err) {
+            if(err) {
+                throw err;
+            }
+        });
     };
 
     /* 
@@ -209,8 +236,6 @@ module.exports = (function () {
         rootDir = argv[3] || '.';
         rootPath = path.join(__dirname, rootDir, projectName);
 
-        configJSON = _readConfigJSON(config_path);
-
         // creating default files... files to be created could be read from a config file
         _initProjectFolder(rootPath);
         _initReadme(rootPath, projectName);
@@ -230,6 +255,8 @@ module.exports = (function () {
             console.log('error: expected another argument for root path');
             return;
         }
+
+        configJSON = _readConfigJSON(config_path);
 
         if(/^--config\./i.test(argv[2])) {
             _updateConfig(argv);
