@@ -274,6 +274,8 @@ module.exports = (function () {
 
         if(/^--config\./i.test(argv[2])) {
             _updateConfig(argv);
+        } else if(/^--show.config/i.test(argv[2])) {
+            console.log(JSON.stringify(configJSON, null, '  '));
         }
         else {
             _createProject(argv);
