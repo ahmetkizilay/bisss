@@ -42,9 +42,13 @@ module.exports = (function () {
     /*
         Initializes git repository. Assumes git exists.
 
-        TODO: make git initialization optional based on the config setting.
+        if init-git is set to false in config, just exit the method
     */
     var _initGit = function (rootPath) {
+        if('init-git' in configJSON && configJSON['init-git'] === 'false') {
+            return;
+        }
+
         var sys = require('sys'),
             exec = require('child_process').exec;
 
