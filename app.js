@@ -69,7 +69,17 @@ module.exports = (function () {
         pkg += '    "description": "",\n';
         pkg += '    "version: "0.0.0",\n';
         pkg += '    "private": true,\n';
-        pkg += '    "author": "' + configJSON.name + '",\n';
+        
+        if(typeof configJSON.author === 'object') {
+            pkg += '    "author: {\n';
+            pkg += '        "name": "' + configJSON.author.name + '",\n';
+            pkg += '        "url": "' + configJSON.author.url + '"\n';
+            pkg += '    },\n';
+        }
+        else if ('name' in configJSON) {
+            pkg += '    "author": "' + configJSON.name + '",\n';
+        }
+
         pkg += '    "license": "' + configJSON.license + '",\n';
         pkg += '    "dependencies": {},\n';
         pkg += '    "repository": {\n';
