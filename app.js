@@ -39,6 +39,8 @@ module.exports = (function () {
         config_path = path.join(home_folder, '.bisss.conf'),
         configJSON;
 
+    var _VERSION_ = '0.1.0';
+
     /*
         Initializes git repository. Assumes git exists.
 
@@ -276,6 +278,8 @@ module.exports = (function () {
             _updateConfig(argv);
         } else if(/^--show.config/i.test(argv[2])) {
             console.log(JSON.stringify(configJSON, null, '  '));
+        } else if(/^--version/i.test(argv[2])) {
+            console.log(_VERSION_);
         }
         else {
             _createProject(argv);
