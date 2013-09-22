@@ -73,11 +73,11 @@ module.exports = (function () {
         pkg += '{\n';
         pkg += '    "name": "' + projectName + '",\n';
         pkg += '    "description": "",\n';
-        pkg += '    "version: "0.0.0",\n';
+        pkg += '    "version": "0.0.0",\n';
         pkg += '    "private": true,\n';
         
         if(typeof configJSON.author === 'object') {
-            pkg += '    "author: {\n';
+            pkg += '    "author": {\n';
             pkg += '        "name": "' + configJSON.author.name + '",\n';
             pkg += '        "url": "' + configJSON.author.url + '"\n';
             pkg += '    },\n';
