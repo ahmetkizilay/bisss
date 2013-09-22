@@ -250,7 +250,7 @@ module.exports = (function () {
 
         projectName = argv[2];
         rootDir = argv[3] || '.';
-        rootPath = path.join(__dirname, rootDir, projectName);
+        rootPath = path.join(process.cwd(), rootDir, projectName);
 
         // creating default files... files to be created could be read from a config file
         _initProjectFolder(rootPath);
